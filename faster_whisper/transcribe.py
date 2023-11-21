@@ -92,10 +92,10 @@ class WhisperModel:
 
         Args:
           model_size_or_path: Size of the model to use (tiny, tiny.en, base, base.en,
-            small, small.en, medium, medium.en, large-v1, large-v2, or large), a path to a converted
-            model directory, or a CTranslate2-converted Whisper model ID from the Hugging Face Hub.
-            When a size or a model ID is configured, the converted model is downloaded
-            from the Hugging Face Hub.
+            small, small.en, medium, medium.en, large-v1, large-v2, large-v3 or large), a path to a
+            converted model directory, or a CTranslate2-converted Whisper model ID from the
+            Hugging Face Hub. When a size or a model ID is configured, the converted model is
+            downloaded from the Hugging Face Hub.
           device: Device to use for computation ("cpu", "cuda", "auto").
           device_index: Device ID to use.
             The model can also be loaded on multiple GPUs by passing a list of IDs
@@ -142,7 +142,7 @@ class WhisperModel:
                 "openai/whisper-tiny" + ("" if self.model.is_multilingual else ".en")
             )
 
-        self.feature_extractor = FeatureExtractor()
+        self.feature_extractor = FeatureExtractor(feature_size=self.model.n_mels)
         self.num_samples_per_token = self.feature_extractor.hop_length * 2
         self.frames_per_second = (
             self.feature_extractor.sampling_rate // self.feature_extractor.hop_length
